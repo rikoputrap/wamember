@@ -1,15 +1,34 @@
 const { Client } = require("whatsapp-web.js");
-const qrcode = require("qrcode-terminal");
+const qrcode = require("qrcode");
 const axios = require("axios");
 const fs = require("fs");
-const { exit } = require("process");
 
+const express = require("express");
+const app = express();
+const http = require("http");
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
+const PORT = 3000;
+
+// server listening
+server.listen(PORT, function () {
+  console.log(`listening on http://localhost:${PORT}`);
+});
+
+// route
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
+});
+
+// Whatssap Session
 const SESSION_FILE_PATH = "./session.json";
 let sessionCfg;
 if (fs.existsSync(SESSION_FILE_PATH)) {
   sessionCfg = require(SESSION_FILE_PATH);
 }
 
+// Whatsapp Web instance
 const client = new Client({
   puppeteer: { headless: true },
   session: sessionCfg,
@@ -17,30 +36,36 @@ const client = new Client({
 
 client.initialize();
 
-client.on("qr", (qr) => {
-  // Membuat QR CODE WA di terminal untuk koneksi
-  console.log("QR RECEIVED", qr);
-  qrcode.generate(qr, { small: true });
-});
-
-// Membuat Session agar saat tidak scan ulang QR CODE
-client.on("authenticated", (session) => {
-  console.log("AUTHENTICATED", session);
-  sessionCfg = session;
-  fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), function (err) {
-    if (err) {
-      console.error(err);
-    }
+// socket io
+io.on("connection", (socket) => {
+  console.log("io connected");
+  socket.emit("message", "Please Wait");
+  client.on("qr", (qr) => {
+    // Membuat QR CODE WA untuk koneksi
+    qrcode.toDataURL(qr, (err, url) => {
+      socket.emit("qr", url);
+      socket.emit("message", "QR Code Received!");
+    });
   });
-});
-
-client.on("auth_failure", (msg) => {
-  // Klo muncul pesa error begini, file session.json coba di hapus
-  console.error("AUTHENTICATION FAILURE", msg);
-});
-
-client.on("ready", () => {
-  console.log("Client is ready!");
+  // Membuat Session agar saat tidak scan ulang QR CODE
+  client.on("authenticated", (session) => {
+    socket.emit("message", "Authenticated!");
+    sessionCfg = session;
+    fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), function (err) {
+      if (err) {
+        console.error(err);
+      }
+    });
+  });
+  // Klo muncul pesan error, file session.json coba di hapus
+  client.on("auth_failure", (msg) => {
+    socket.emit("message", "Authentication Failed!");
+    console.error("AUTHENTICATION FAILURE", msg);
+  });
+  // Sudah terkoneksi
+  client.on("ready", () => {
+    socket.emit("message", "Client Is Ready!");
+  });
 });
 
 client.on("message", async (msg) => {
@@ -79,12 +104,12 @@ client.on("message", async (msg) => {
         // error = sudah terdaftar, success = belum terdaftar
         if (res.data.status == "error") {
           msg.reply(`
-          Yth Bpk/Ibu 
-          ${res.data.nama} 
+          Yth Bpk/Ibu
+          ${res.data.nama}
           Jangan khawatir!
           Anda sudah menjadi member kami!
           Nantikan promo selanjutnya!
-          
+
           Berikut data anda yg disimpan:
           Nama: ${res.data.nama}
           No Telepon: ${res.data.telepon}
@@ -96,14 +121,14 @@ client.on("message", async (msg) => {
         } else if (res.data.status == "success") {
           msg.reply(`
           Yeah selamat!
-          Berhasil menjadi member kami! 
+          Berhasil menjadi member kami!
           Nantikan promo selanjutnya!
-          
+
           Berikut data anda yg disimpan:
           Nama: ${namaPel}
           No Telepon: ${noPel}
           Alamat: ${alamatPel}
-          
+
           Jangan khawatir!!
           Kami sangat menjaga privasi anda!
           `);
