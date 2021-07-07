@@ -21,4 +21,6 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+Route::resource('member', \App\Http\Controllers\MemberController::class)->except('show');
+
+require __DIR__ . '/auth.php';

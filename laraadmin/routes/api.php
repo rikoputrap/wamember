@@ -17,3 +17,28 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('member', function (Request $request) {
+    $memberCek = App\Models\Member::where('phone', $request->input('phone'))->first();
+    // null berarti belum terdaftar
+    if ($memberCek === null) {
+        App\Models\Member::create([
+            'name' => $request->input('name'),
+            'phone' => $request->input('phone'),
+            'address' => $request->input('address'),
+        ]);
+        return response([
+            // berhasil terdaftar
+            'status' => 'success',
+            'messages' => $request->input('name')
+        ]);
+    } else {
+        return response([
+            // sudah terdaftar
+            'status' => 'error',
+            'name' => $memberCek->name,
+            'phone' => $memberCek->phone,
+            'address' => $memberCek->address
+        ]);
+    }
+});
