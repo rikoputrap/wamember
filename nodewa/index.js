@@ -11,6 +11,8 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 const PORT = 3000;
 
+require("dotenv").config();
+
 // server listening
 server.listen(PORT, function () {
   console.log(`listening on http://localhost:${PORT}`);
@@ -39,17 +41,16 @@ client.initialize();
 // socket io
 io.on("connection", (socket) => {
   console.log("io connected");
-  socket.emit("message", "Please Wait");
   client.on("qr", (qr) => {
     // Membuat QR CODE WA untuk koneksi
     qrcode.toDataURL(qr, (err, url) => {
       socket.emit("qr", url);
-      socket.emit("message", "QR Code Received!");
+      socket.emit("message", "Scan QRCode Diatas!");
     });
   });
   // Membuat Session agar saat tidak scan ulang QR CODE
   client.on("authenticated", (session) => {
-    socket.emit("message", "Authenticated!");
+    socket.emit("message", "Berhasil terotentikasi!");
     sessionCfg = session;
     fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), function (err) {
       if (err) {
@@ -59,12 +60,15 @@ io.on("connection", (socket) => {
   });
   // Klo muncul pesan error, file session.json coba di hapus
   client.on("auth_failure", (msg) => {
-    socket.emit("message", "Authentication Failed!");
+    socket.emit(
+      "message",
+      "Gagal Otentikasi, mohon hapus session, dan restart server"
+    );
     console.error("AUTHENTICATION FAILURE", msg);
   });
   // Sudah terkoneksi
   client.on("ready", () => {
-    socket.emit("message", "Client Is Ready!");
+    socket.emit("message", "Berhasil Konek!");
   });
 });
 
@@ -91,7 +95,7 @@ client.on("message", async (msg) => {
 
     // post ke database melalui api
     axios
-      .post("https://lararentalmobil.000webhostapp.com/api/pelanggan", {
+      .post(process.env.APP_APIMEMBER, {
         nama: namaPel,
         telepon: noPel,
         alamat: alamatPel,
