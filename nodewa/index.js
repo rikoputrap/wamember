@@ -96,9 +96,9 @@ client.on("message", async (msg) => {
     // post ke database melalui api
     axios
       .post(process.env.APP_APIMEMBER, {
-        nama: namaPel,
-        telepon: noPel,
-        alamat: alamatPel,
+        name: namaPel,
+        phone: noPel,
+        address: alamatPel,
       })
       .then((res) => {
         console.log(`statusCode: ${res.statusCode}`);
@@ -109,15 +109,15 @@ client.on("message", async (msg) => {
         if (res.data.status == "error") {
           msg.reply(`
           Yth Bpk/Ibu
-          ${res.data.nama}
+          ${res.data.name}
           Jangan khawatir!
           Anda sudah menjadi member kami!
           Nantikan promo selanjutnya!
 
           Berikut data anda yg disimpan:
           Nama: ${res.data.nama}
-          No Telepon: ${res.data.telepon}
-          Alamat: ${res.data.alamat}
+          No Telepon: ${res.data.phone}
+          Alamat: ${res.data.address}
 
           Jangan khawatir!!
           Kami sangat menjaga privasi anda!
