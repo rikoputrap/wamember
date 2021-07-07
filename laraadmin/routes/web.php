@@ -15,8 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+ Route::get('/', function () {
+     return view('welcome');
+ });
 
 Route::resource('pelanggan', PelangganController::class)->except('show');
+Route::resource('registrasi', RegistrasiController::class)->except('show');
