@@ -8,40 +8,10 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <title>TEST</title>
+    <title>Test Daftar Member</title>
   </head>
-  <body style="background-color:darkgray;">
-    <div class="row justify-content-center align-items-center" style="height: 100vh">
-        <div class="col-md-12 col-lg-4">
-                        <div class="card">
-                <div class="card-header text-center">
-                    <h1 class="h4">Selamat Datang!</h1>
-                </div>
-                <div class="card-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="">Nama</label>
-                            <input class="form-control" type="text" name="" id="nama">
-                        </div>
-                        <div class="form-group">
-                            <label for="">Alamat</label>
-                            <input class="form-control" type="text" name="" id="alamat">
-                        </div>
-                </form></div>
-                <div class="card-footer">
-                    <button type="button" id="submit" class="btn btn-primary">Daftar Member Yuk!</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script text="text/javascript">
-        $('#submit').on('click', function() {
-            let nama = $('#nama').val()
-            let alamat = $('#alamat').val()
-            let url = `https://api.whatsapp.com/send?phone={6281907861308}&text=!daftar@${nama}@${alamat}`
-            window.open(url, '_blank')
-        })
-    </script>
+  <body>
+    <h1>Test</h1>
     <!-- Optional JavaScript; choose one of the two! -->
 
     <!-- Option 1: Bootstrap Bundle with Popper -->

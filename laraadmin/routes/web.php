@@ -20,4 +20,15 @@ use Illuminate\Support\Facades\Route;
  });
 
 Route::resource('pelanggan', PelangganController::class)->except('show');
-Route::resource('registrasi', RegistrasiController::class)->except('show');
+
+Route::post('/registrasi', function (\Illuminate\Http\Request $request) {
+    $name = $request->input('name');
+    $address = $request->input('address');
+    $basephone = env('APP_BASEPHONE', '6281907861308');
+    return redirect('https://api.whatsapp.com/send?phone={' . $basephone  . '}&text=' . '!daftar@' . $name . '@' . $address);
+})->name('registrasi');
+
+
+Route::get('/registrasi', function () {
+    return view('registrasi.index');
+})->name('registrasi');

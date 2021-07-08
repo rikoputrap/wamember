@@ -91,7 +91,7 @@ client.on("message", async (msg) => {
 
     // post ke database melalui api
     axios
-      .post("https://lararentalmobil.000webhostapp.com/api/pelanggan", {
+      .post("http://localhost:8000/api/member", {
         nama: namaPel,
         telepon: noPel,
         alamat: alamatPel,
