@@ -24,6 +24,6 @@ Route::get('/member', function () {
 Route::post('/member', function (\Illuminate\Http\Request $request) {
     $name = $request->input('name');
     $address = $request->input('address');
-    $basephone = env('APP_BASEPHONE', '6285649439890');
+    $basephone = env('APP_BASEPHONE', '6281907861308');
     return redirect('https://api.whatsapp.com/send?phone={' . $basephone  . '}&text=' . '!daftar@' . $name . '@' . $address);
 })->name('member');
