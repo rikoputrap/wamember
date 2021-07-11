@@ -95,7 +95,7 @@ client.on("message", async (msg) => {
 
     // post ke database melalui api
     axios
-      .post(process.insert.js, {
+      .post(process.env.APP_APIMEMBER, {
         name: namaPel,
         phone: noPel,
         address: alamatPel,
