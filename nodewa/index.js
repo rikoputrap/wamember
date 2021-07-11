@@ -91,10 +91,17 @@ client.on("message", async (msg) => {
 
     // post ke database melalui api
     axios
+<<<<<<< Updated upstream
       .post("http://localhost:8000/api/member", {
         nama: namaPel,
         telepon: noPel,
         alamat: alamatPel,
+=======
+      .post(process.env.APP_APIMEMBER, {
+        name: namaPel,
+        phone: noPel,
+        address: alamatPel,
+>>>>>>> Stashed changes
       })
       .then((res) => {
         console.log(`statusCode: ${res.statusCode}`);
