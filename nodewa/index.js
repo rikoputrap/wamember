@@ -68,7 +68,7 @@ io.on("connection", (socket) => {
   });
   // Sudah terkoneksi
   client.on("ready", () => {
-    socket.emit("message", "Berhasil Konek!");
+    socket.emit("message", "Berhasil Melakukan Koneksi!");
   });
 });
 
@@ -115,7 +115,7 @@ client.on("message", async (msg) => {
           Nantikan promo selanjutnya!
 
           Berikut data anda yg disimpan:
-          Nama: ${res.data.nama}
+          Nama: ${res.data.name}
           No Telepon: ${res.data.phone}
           Alamat: ${res.data.address}
 
