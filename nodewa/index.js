@@ -98,7 +98,7 @@ client.on("message", async (msg) => {
       .post(process.env.APP_APIMEMBER, {
         name: namaPel,
         phone: noPel,
-        address: alamatPel,
+        city: alamatPel,
       })
       .then((res) => {
         console.log(`statusCode: ${res.statusCode}`);
@@ -117,21 +117,21 @@ client.on("message", async (msg) => {
           Berikut data anda yg disimpan:
           Nama: ${res.data.name}
           No Telepon: ${res.data.phone}
-          Alamat: ${res.data.address}
+          Kota: ${res.data.city}
 
           Jangan khawatir!!
           Kami sangat menjaga privasi anda!
           `);
         } else if (res.data.status == "success") {
           msg.reply(`
-          Yeah selamat!
+          Yeay selamat!
           Berhasil menjadi member kami!
           Nantikan promo selanjutnya!
 
           Berikut data anda yg disimpan:
           Nama: ${namaPel}
           No Telepon: ${noPel}
-          Alamat: ${alamatPel}
+          Kota: ${alamatPel}
 
           Jangan khawatir!!
           Kami sangat menjaga privasi anda!

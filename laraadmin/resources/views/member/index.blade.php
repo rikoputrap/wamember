@@ -93,7 +93,7 @@
 						<tr>
 							<th data-priority="1">Nama</th>
 							<th data-priority="2">No. WA</th>
-							<th data-priority="3">Alamat</th>
+							<th data-priority="3">Kota</th>
 							<th data-priority="4" colspan="2">Opsi</th>
 						</tr>
 					</thead>
